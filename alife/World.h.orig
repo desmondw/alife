@@ -1,0 +1,49 @@
+#ifndef _WORLD_H
+#define _WORLD_H
+
+#include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
+#include <vector>
+#include "Tile.h"
+#include "Settings.h"
+
+class World
+{
+	private:
+		std::vector<std::vector<Tile>> newBoard;
+		std::vector<std::vector<Tile>> emptyBoard;
+
+		sf::SoundBuffer sbFoodEaten;
+		sf::SoundBuffer sbBirth;
+		sf::SoundBuffer sbDeath;
+
+		sf::Sound sfxFoodEaten;
+		sf::Sound sfxBirth;
+		sf::Sound sfxDeath;
+	public:
+		static const int WORLD_SIZE = 64; //min size = 32
+		static const int PLANT_GROWTH_RATE = WORLD_SIZE * 100;
+		static const int HUNGER_FILLED_PLANT = 30;
+		static const int HUNGER_FILLED_CREATURE = HUNGER_FILLED_PLANT * 2;
+
+		std::vector<std::vector<Tile>> board;
+
+		World(void);
+		~World(void);
+		World(int soundOn);
+		void initializeWorld(int soundOn);
+		void seedWorld();
+		void progressWorld();
+		void calculateTile(int x, int y);
+		void calculateAI(int x, int y);
+		bool starved(int x, int y);
+		bool runAway(int x, int y);
+		bool eatVegetation(int x, int y);
+		bool eatCreature(int x, int y);
+		bool wander(int x, int y);
+		bool testTileExists(int x, int y);
+		void reproduce(int parentX, int parentY, int childX, int childY);
+		void toggleSound(Settings& settings);
+};
+
+#endif
